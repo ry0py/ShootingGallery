@@ -18,7 +18,7 @@ public class Gun : MonoBehaviour
     private bool isReloading;
 
     // InputAction fireAction;
-    
+
     // public OVRInput.Button triggerButton = OVRInput.Button.PrimaryIndexTrigger; // トリガーボタン
     public AudioClip shootSound;
     private AudioSource audioSource;
@@ -44,7 +44,11 @@ public class Gun : MonoBehaviour
         if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) && !isReloading){
             FireBullet();
             StartCoroutine(WaitBulletReload());
+            StartCoroutine(LoadingSlider());
         }
+        // if(OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)){
+        //     FireBullet();
+        // }
     }
 
     void FireBullet()

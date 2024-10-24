@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 public class ShootingScoreManager : MonoBehaviour
 {
-    private int score = 0;
+    private int score;
     public int Score{
         get{
             return score;
@@ -14,7 +14,7 @@ public class ShootingScoreManager : MonoBehaviour
             else{
                 score = 0;
             }
-            UpdateScoreText();
+            // UpdateScoreText();
         }
     }
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -25,6 +25,10 @@ public class ShootingScoreManager : MonoBehaviour
         scoreText.text = "Score: " + score.ToString();
     }
     private void UpdateScoreText()
+    {
+        scoreText.text = "Score: " + score.ToString();
+    }
+    void Update()
     {
         scoreText.text = "Score: " + score.ToString();
     }
