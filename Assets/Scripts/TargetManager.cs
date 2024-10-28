@@ -2,36 +2,24 @@ using UnityEngine;
 
 public class TargetManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private float speed = 0.5f;
-    private float countTime = 0.0f;
-    private Rigidbody rb;
-    // private int waveCount = 0;
+    Vector3 firstStagePosition = new Vector3(-0.49f, 3.84f, -5.81f);
+    Vector3 secondStagePosition = new Vector3(-0.49f, 5.636f, -7.74f);
+    Vector3 thirdStagePosition = new Vector3(-0.49f, 7.347f, -9.66f);
+    GameObject target;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        target = (GameObject)Resources.Load("Target");
+        Instantiate(target, firstStagePosition, target.transform.rotation);
+        Instantiate(target, secondStagePosition, target.transform.rotation);
+        Instantiate(target, thirdStagePosition, target.transform.rotation);
     }
 
-    // Update is called once per frame
     void Update()
-    {   MoveWave();
+    {
+        
     }
 
-    void MoveWave()
-    {
-        countTime += Time.deltaTime;
-        while(countTime < 5.0f)
-        {
-            transform.position += new Vector3(-speed * Time.deltaTime,0, 0 );
-            countTime += Time.deltaTime;
-        }
-        countTime = 0.0f;
-        while(countTime < 5.0f)
-        {
-            transform.position += new Vector3(-speed * Time.deltaTime,0, 0);
-            countTime += Time.deltaTime;
-        }
-        countTime = 0.0f;
+    
+
     }
-}

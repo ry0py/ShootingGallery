@@ -16,7 +16,7 @@ public class Ammo : MonoBehaviour
         // ShootingScoreManager scoreManager = FindObjectOfType<ShootingScoreManager>();
         scoreManagerObj = GameObject.Find("ScoreManager");
         scoreManager = scoreManagerObj.GetComponent<ShootingScoreManager>();
-        // Destroy(gameObject, timeToDestroy);
+        Destroy(gameObject, timeToDestroy);
     }
     void OnCollisionEnter(Collision other)
     {
@@ -25,6 +25,7 @@ public class Ammo : MonoBehaviour
         {
             scoreManager.Score += 10;
             Destroy(gameObject);
+            Destroy(other.gameObject);
         }
 
     }

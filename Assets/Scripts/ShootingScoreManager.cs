@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 public class ShootingScoreManager : MonoBehaviour
 {
+    [SerializeField] AudioClip hitSound;
+    private AudioSource audioSource;
     private int score;
     public int Score{
         get{
@@ -14,7 +16,7 @@ public class ShootingScoreManager : MonoBehaviour
             else{
                 score = 0;
             }
-            // UpdateScoreText();
+            UpdateScoreText();
         }
     }
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -22,14 +24,17 @@ public class ShootingScoreManager : MonoBehaviour
     void Start()
     {
         score = 0;
+        audioSource = gameObject.GetComponent<AudioSource>();
         scoreText.text = "Score: " + score.ToString();
     }
     private void UpdateScoreText()
     {
+        audioSource.PlayOneShot(hitSound);
         scoreText.text = "Score: " + score.ToString();
+
     }
-    void Update()
-    {
-        scoreText.text = "Score: " + score.ToString();
-    }
+    // void Update()
+    // {
+    //     scoreText.text = "Score: " + score.ToString();
+    // }
 }
