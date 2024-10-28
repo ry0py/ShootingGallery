@@ -1,25 +1,52 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TargetManager : MonoBehaviour
 {
     Vector3 firstStagePosition = new Vector3(-0.49f, 3.84f, -5.81f);
     Vector3 secondStagePosition = new Vector3(-0.49f, 5.636f, -7.74f);
     Vector3 thirdStagePosition = new Vector3(-0.49f, 7.347f, -9.66f);
-    GameObject target;
+    private const int stageNum = 3;
+    Vector3[] stagePositions = new Vector3[stageNum];
+    GameObject[] targetPrefabs = new GameObject[2];
+    GameObject[] stageTargets = new GameObject[stageNum];
+    private int randomNumber;
 
     void Start()
     {
-        target = (GameObject)Resources.Load("Target");
-        Instantiate(target, firstStagePosition, target.transform.rotation);
-        Instantiate(target, secondStagePosition, target.transform.rotation);
-        Instantiate(target, thirdStagePosition, target.transform.rotation);
+        targetPrefabs = new GameObject[] {(GameObject)Resources.Load("NormalTarget"), (GameObject)Resources.Load("RainbowTarget")};
+        stagePositions = new Vector3[] {firstStagePosition, secondStagePosition, thirdStagePosition};
+        for(int i = 0; i < stageNum; i++)
+        {
+            stageTargets[i] = Instantiate(targetPrefabs[0], stagePositions[i], targetPrefabs[0].transform.rotation);
+        }
     }
 
     void Update()
     {
-        
+        for(int i = 0; i < 3; i++)
+        {
+            Debug.Log(stageTargets[i]);
+            if(stageTargets[i] == null)
+            {
+                SpawnTarget(i);
+            }
+        }
     }
 
-    
-
+    // 階数指定は欧米式(0から始まる)
+    // TODO いつか的が壊れた位置で新しい的を生成するようにする(Target.csのOnDestroy()時にその位置をどこかで補完して以下の関数でその値を使うようにする)
+    private void SpawnTarget(int stage)
+    {
+        randomNumber = (int)Random.Range(0, 100);
+        Debug.Log(randomNumber);
+        if(randomNumber < 80)
+        {
+            stageTargets[stage] = Instantiate(targetPrefabs[0], stagePositions[stage], targetPrefabs[0].transform.rotation);
+        }
+        else
+        {
+           stageTargets[stage] = Instantiate(targetPrefabs[1], stagePositions[stage], targetPrefabs[1].transform.rotation);
+        }
     }
+}

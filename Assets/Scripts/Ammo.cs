@@ -21,9 +21,15 @@ public class Ammo : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         // Targetの種類を増やすときはここに追加する
-        if(other.gameObject.tag == "Target" || other.gameObject.CompareTag("Target"))
+        if(other.gameObject.CompareTag("NormalTarget"))
         {
             scoreManager.Score += 10;
+            Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
+        if(other.gameObject.CompareTag("RainbowTarget"))
+        {
+            scoreManager.Score += 50;
             Destroy(gameObject);
             Destroy(other.gameObject);
         }
