@@ -10,6 +10,8 @@ public class Target : MonoBehaviour
     // 初期位置を保存する変数
     private Vector3 startPosition;
     private float timeToDestroy = 2.0f;
+    public float cycleTime;
+    private static bool isGameFinish = false;
     [SerializeField] private Transform brokenTargetPrefab;
     [SerializeField] private Transform burstEffectPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,11 +25,19 @@ public class Target : MonoBehaviour
     void Update()
     {
         // Mathf.PingPongを使用して、オブジェクトを横方向に行ったり来たりさせる
-        float offset = Mathf.PingPong(Time.time, 2* amplitude)-amplitude; // sinでもよさそう
+        if(cycleTime <= 0)
+        {
+            cycleTime = 1.0f;
+        }
+        float offset = Mathf.PingPong(Time.time/cycleTime, 2* amplitude)-amplitude; // sinでもよさそう
         transform.position = startPosition + new Vector3(offset, 0, 0);
     }
     void OnDestroy()
     {
+        if(isGameFinish)
+        {
+            return;
+        }
         Transform brokenTarget = Instantiate(brokenTargetPrefab, transform.position, brokenTargetPrefab.rotation); // brokenTargetを生成
         Instantiate(burstEffectPrefab, transform.position, Quaternion.identity); // brokenTargetを生成
         // brokenTarget.localScale = transform.localScale; // brokenTargetのサイズをTargetと同じにする
@@ -36,5 +46,9 @@ public class Target : MonoBehaviour
             rb.AddExplosionForce(1000.0f, transform.position, 10.0f);
         }
         Destroy(gameObject);
+    }
+    public static void SetGameFinish()
+    {
+        isGameFinish = true;
     }
 }

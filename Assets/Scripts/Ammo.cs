@@ -7,11 +7,11 @@ using TMPro;
 public class Ammo : MonoBehaviour
 {
     ShootingScoreManager scoreManager;
-    GameObject scoreManagerObj;
+    GameObject scoreManagerObj = null;
 
     private float timeToDestroy = 2.0f;
 
-    void Awake()
+    void Start()
     {
         // ShootingScoreManager scoreManager = FindObjectOfType<ShootingScoreManager>();
         scoreManagerObj = GameObject.Find("ScoreManager");
@@ -20,6 +20,11 @@ public class Ammo : MonoBehaviour
     }
     void OnCollisionEnter(Collision other)
     {
+        if(scoreManager == null)
+        {
+            scoreManagerObj = GameObject.Find("ScoreManager");
+            scoreManager = scoreManagerObj.GetComponent<ShootingScoreManager>();
+        }
         // Targetの種類を増やすときはここに追加する
         if(other.gameObject.CompareTag("NormalTarget"))
         {
@@ -33,7 +38,6 @@ public class Ammo : MonoBehaviour
             Destroy(gameObject);
             Destroy(other.gameObject);
         }
-
     }
     // private IEnumerator DestroyBullet(){
     //     yield return new WaitForSeconds(timeToDestroy);

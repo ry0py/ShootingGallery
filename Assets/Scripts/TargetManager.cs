@@ -11,6 +11,7 @@ public class TargetManager : MonoBehaviour
     GameObject[] targetPrefabs = new GameObject[2];
     GameObject[] stageTargets = new GameObject[stageNum];
     private int randomNumber;
+    
 
     void Start()
     {
@@ -19,21 +20,29 @@ public class TargetManager : MonoBehaviour
         for(int i = 0; i < stageNum; i++)
         {
             stageTargets[i] = Instantiate(targetPrefabs[0], stagePositions[i], targetPrefabs[0].transform.rotation);
+            stageTargets[i].GetComponent<Target>().cycleTime = (float)(i+1)/stageNum;
+            Debug.Log(stageTargets[i].GetComponent<Target>().cycleTime);
         }
     }
 
     void Update()
     {
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < stageNum; i++)
         {
-            Debug.Log(stageTargets[i]);
             if(stageTargets[i] == null)
             {
                 SpawnTarget(i);
             }
         }
     }
-
+    public void OnGameFinish()
+    {
+        Target.SetGameFinish();
+        for (int i = 0; i < stageNum; i++)
+        {
+            Destroy(stageTargets[i]);
+        }
+    }
     // 階数指定は欧米式(0から始まる)
     // TODO いつか的が壊れた位置で新しい的を生成するようにする(Target.csのOnDestroy()時にその位置をどこかで補完して以下の関数でその値を使うようにする)
     private void SpawnTarget(int stage)
@@ -43,10 +52,12 @@ public class TargetManager : MonoBehaviour
         if(randomNumber < 80)
         {
             stageTargets[stage] = Instantiate(targetPrefabs[0], stagePositions[stage], targetPrefabs[0].transform.rotation);
+            stageTargets[stage].GetComponent<Target>().cycleTime = (float)(stage+1)/stageNum;
         }
         else
         {
            stageTargets[stage] = Instantiate(targetPrefabs[1], stagePositions[stage], targetPrefabs[1].transform.rotation);
+           stageTargets[stage].GetComponent<Target>().cycleTime = (float)(stage+1)/stageNum;
         }
     }
 }

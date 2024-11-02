@@ -15,6 +15,7 @@ public class Gun : MonoBehaviour
     private bool isReloading;
     public AudioClip shootSound;
     private AudioSource audioSource;
+    private static bool isGameStarted = false;
 
     void Start()
     {
@@ -25,6 +26,10 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        if(!isGameStarted)
+        {
+            return;
+        }
         // OVRInputによる発射
         if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) && !isReloading)
         {
@@ -67,6 +72,11 @@ public class Gun : MonoBehaviour
     private void StartVibration(float frequency, float amplitude, float duration, OVRInput.Controller controller)
     {
         StartCoroutine(Vibrate(frequency, amplitude, duration, controller));
+    }
+
+    public static void SetGameStart()
+    {
+        isGameStarted = true;
     }
 
     private IEnumerator Vibrate(float frequency, float amplitude, float duration, OVRInput.Controller controller)
